@@ -66,8 +66,8 @@ public class EventService(IEventRepository eventRepository) : IEventService
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description,
-                Seeting = x.Seeting,
+                Description = x.Description ?? "",
+                Seating = x.Seating,
                 Price = x.Price,
                 Currency = x.Currency
             })

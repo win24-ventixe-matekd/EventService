@@ -9,7 +9,7 @@ public class PackageEntity
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = null!;
     public string? Description { get; set; }
-    public string Seeting { get; set; } = null!;
+    public string Seating { get; set; } = null!;
 
     [Column(TypeName = "decimal(18, 2)")]
     public decimal? Price { get; set; }
