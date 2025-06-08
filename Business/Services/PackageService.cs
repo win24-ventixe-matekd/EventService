@@ -1,6 +1,8 @@
 ﻿using Business.Interfaces;
 using Business.Models;
+using Data.Entities;
 using Data.Interfaces;
+using Data.Repositories;
 
 namespace Business.Services;
 
@@ -34,5 +36,30 @@ public class PackageService(IPackageRepository packageRepository) : IPackageServ
         };
 
         return new EventResult<Package> { Success = true, StatusCode = 200, Result = CurrentPackage };
+    }
+
+    public async Task<EventResult> CreateAsync(CreatePackageModel model)
+    {
+        try
+        {
+            var entity = new PackageEntity
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Seating = model.Seating,
+                Price = model.Price,
+                Currency = model.Currency,
+                EventId = model.EventId,
+            };
+
+            var result = await _packageRepository.AddAsync(entity);
+            return result.Success
+                ? new EventResult { Success = true, StatusCode = 201 }
+                : new EventResult { Success = false, StatusCode = 500, Error = result.Error };
+        }
+        catch (Exception ex)
+        {
+            return new EventResult { Success = false, StatusCode = 500, Error = ex.Message };
+        }
     }
 }
