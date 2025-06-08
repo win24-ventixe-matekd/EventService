@@ -65,7 +65,7 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
 
         if (includes != null && includes.Length != 0)
             foreach (var include in includes)
-                query.Include(include);
+                query = query.Include(include);
 
         var entity = await query.FirstOrDefaultAsync(where);
 
