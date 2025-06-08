@@ -4,6 +4,7 @@ using Data.Interfaces;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace Data.Repositories;
 
@@ -32,5 +33,12 @@ public class PackageRepository(DataContext context) : BaseRepository<PackageEnti
             Debug.WriteLine(ex.Message);
             return new RepositoryResult<PackageEntity> { Success = false, StatusCode = 500, Error = "An error occurred." };
         }
+    }
+
+    public async override Task<RepositoryResult<PackageEntity>> GetAsync(Expression<Func<PackageEntity, bool>> where, params Expression<Func<PackageEntity, object>>[] includes)
+    {
+        // something wrong with base repo not including
+        var entity = await _dbSet.Include(x => x.Event).FirstOrDefaultAsync(where);
+        return new RepositoryResult<PackageEntity> { Success = true, Result = entity, StatusCode = 200 };
     }
 }
